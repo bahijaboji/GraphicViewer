@@ -1,0 +1,137 @@
+﻿<Window x:Class="GraphicViewer.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:GraphicViewer.ViewModels"
+        Title="Graphic Viewer" 
+        Height="800" 
+        Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="#F0F0F0">
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Graphic Viewer App"  Margin="20,50,0,10" FontSize="24" FontWeight="SemiBold" Foreground="DarkSlateGray"/>
+
+        <!-- Button to load a JSON File-->
+        <Button Grid.Row="0"
+                Content="Load JSON File"
+                Command="{Binding LoadJsonCommand}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Margin="0,50,0,10"
+                Padding="15,5"
+                FontSize="14"
+                Background="#007ACC"
+                Foreground="White"
+                BorderBrush="#005D9C"
+                Cursor="Hand">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#006BB3"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+
+       
+        <Border Grid.Row="1"
+                Background="White"
+                BorderBrush="#CCCCCC"
+                BorderThickness="1"
+                CornerRadius="6"
+                Padding="15">
+
+            <Viewbox Stretch="Uniform" 
+                     HorizontalAlignment="Center" 
+                     VerticalAlignment="Center">
+
+              
+                <Grid Width="600" 
+                      Height="450"
+                      Background="Transparent">
+                    <Grid.LayoutTransform>
+                        <ScaleTransform ScaleX="3.5" ScaleY="3.5"/>
+                    </Grid.LayoutTransform>
+
+                    <!--  Shapes  -->
+                    <ItemsControl ItemsSource="{Binding Shapes}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center">
+                        <ItemsControl.Resources>
+                            <!-- Line shape -->
+                            <DataTemplate DataType="{x:Type vm:LineViewModel}">
+                                <Line X1="{Binding X1}" Y1="{Binding Y1}" 
+                                      X2="{Binding X2}" Y2="{Binding Y2}"
+                                      Stroke="{Binding Stroke}" 
+                                    
+                                      StrokeLineJoin="Round"
+                                      StrokeEndLineCap="Round"/>
+                            </DataTemplate>
+
+                            <!-- Circle shape -->
+                            <DataTemplate DataType="{x:Type vm:CircleViewModel}">
+                                <Ellipse Width="{Binding Width}" 
+                                         Height="{Binding Height}"
+                                         Stroke="{Binding Stroke}" 
+                                       
+                                         Fill="{Binding Fill}"
+                                         RenderTransformOrigin="0.5,0.5">
+                                    <Ellipse.RenderTransform>
+                                        <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
+                                    </Ellipse.RenderTransform>
+                                </Ellipse>
+                            </DataTemplate>
+
+                            <!-- Triangle shape -->
+                            <DataTemplate DataType="{x:Type vm:TriangleViewModel}">
+                                <Polygon Points="{Binding Points}"
+                                         Stroke="{Binding Stroke}" 
+                                         
+                                         Fill="{Binding Fill}"
+                                         StrokeLineJoin="Round"/>
+                            </DataTemplate>
+                        </ItemsControl.Resources>
+                    </ItemsControl>
+                </Grid>
+            </Viewbox>
+        </Border>
+    </Grid>
+
+    <Window.Resources>
+       
+        <Style x:Key="ModernButtonStyle" TargetType="Button">
+            <Setter Property="Padding" Value="18,6"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Background" Value="#007ACC"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#005D9C"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#006BB3"/>
+                    <Setter Property="BorderBrush" Value="#004A80"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+</Window>
